@@ -1,0 +1,28 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+import { MoonIcon, SunIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const root = () => document.documentElement;
+
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(root(), { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
+
+export function ThemeToggle() {
+  const dark = useSyncExternalStore(subscribe, () => root().classList.contains("dark"), () => false);
+
+  function toggle() {
+    root().classList.toggle("dark", !dark);
+    localStorage.theme = dark ? "light" : "dark";
+  }
+
+  return (
+    <Button variant="ghost" size="icon-lg" onClick={toggle} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>
+      {dark ? <SunIcon /> : <MoonIcon />}
+    </Button>
+  );
+}
