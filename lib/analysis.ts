@@ -18,17 +18,7 @@ export const analysisSchema = z.object({
   }),
   verdict: z.enum(["scam", "suspicious", "safe"]),
   riskScore: z.number().describe("0 (certainly safe) to 100 (certainly a scam)"),
-  scamType: z.enum([
-    "kyc_update",
-    "courier",
-    "electricity_bill",
-    "job_offer",
-    "digital_arrest",
-    "lottery",
-    "upi",
-    "other",
-    "none",
-  ]),
+  scamType: z.enum(["kyc_update", "courier", "electricity_bill", "job_offer", "digital_arrest", "lottery", "upi", "other", "none"]),
   impersonates: z.string().nullable().describe("The organisation the message pretends to come from, in English, or null"),
   redFlags: z.array(
     z.object({
@@ -36,7 +26,9 @@ export const analysisSchema = z.object({
       reason: z.string().describe("One short sentence in the user's language"),
     }),
   ),
-  whatHappensNext: z.array(z.string()).describe("3 to 5 short steps, in the user's language, of what the scammer does if the user follows the message. Empty if safe"),
+  whatHappensNext: z
+    .array(z.string())
+    .describe("3 to 5 short steps, in the user's language, of what the scammer does if the user follows the message. Empty if safe"),
   explanation: z.string().describe("2 to 4 very simple sentences in the user's language explaining the verdict"),
   whatToDoNow: z.array(z.string()).describe("Exactly 3 short actions in the user's language"),
 });

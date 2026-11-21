@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
+import type { Strings } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 
 const root = () => document.documentElement;
@@ -12,8 +13,12 @@ function subscribe(onChange: () => void) {
   return () => observer.disconnect();
 }
 
-export function ThemeToggle() {
-  const dark = useSyncExternalStore(subscribe, () => root().classList.contains("dark"), () => false);
+export function ThemeToggle({ t }: { t: Strings }) {
+  const dark = useSyncExternalStore(
+    subscribe,
+    () => root().classList.contains("dark"),
+    () => false,
+  );
 
   function toggle() {
     root().classList.toggle("dark", !dark);
@@ -21,7 +26,7 @@ export function ThemeToggle() {
   }
 
   return (
-    <Button variant="ghost" size="icon-lg" onClick={toggle} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>
+    <Button variant="ghost" size="icon-lg" onClick={toggle} aria-label={dark ? t.lightMode : t.darkMode} className="size-11">
       {dark ? <SunIcon /> : <MoonIcon />}
     </Button>
   );

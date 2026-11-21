@@ -20,16 +20,21 @@ export function Checking({ t }: { t: Strings }) {
 
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 px-4 pt-5 pb-10" aria-busy>
-      <Header />
+      <Header t={t} />
 
-      <ol className="flex flex-col divide-y rounded-lg border bg-card">
+      <ol role="status" aria-live="polite" className="flex flex-col divide-y rounded-lg border bg-card">
         {t.steps.map((step, index) => (
           <li
             key={step}
-            className={`flex items-center gap-3 px-4 py-3 transition-colors ${index > current ? "text-muted-foreground/60" : index < current ? "text-muted-foreground" : "font-medium"}`}
+            aria-current={index === current ? "step" : undefined}
+            className={`flex items-center gap-3 px-4 py-3 transition-colors ${index > current ? "text-muted-foreground" : index < current ? "text-muted-foreground" : "font-medium"}`}
           >
             <span className="flex size-5 shrink-0 items-center justify-center">
-              {index < current ? <CheckIcon className="size-5 text-safe" /> : index === current ? <Spinner className="size-5 text-accent" /> : null}
+              {index < current ? (
+                <CheckIcon className="size-5 text-safe" />
+              ) : index === current ? (
+                <Spinner aria-hidden role="presentation" className="size-5 text-accent" />
+              ) : null}
             </span>
             {step}
           </li>

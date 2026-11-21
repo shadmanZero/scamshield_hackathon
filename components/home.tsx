@@ -19,7 +19,7 @@ type Props = {
 };
 
 const tileClass =
-  "flex flex-col items-center justify-center gap-3 rounded-lg border px-3 py-6 text-base font-medium transition-colors active:translate-y-px [&_svg]:size-7";
+  "flex flex-col items-center justify-center gap-3 rounded-lg border px-3 py-6 text-base font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50 has-focus-visible:ring-3 has-focus-visible:ring-ring/50 active:translate-y-px [&_svg]:size-7";
 
 export function Home({ t, language, onLanguageChange, onSubmit, error }: Props) {
   const [text, setText] = useState("");
@@ -33,13 +33,13 @@ export function Home({ t, language, onLanguageChange, onSubmit, error }: Props) 
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-8 px-4 pt-5 pb-10">
       <div className="flex flex-col gap-5">
-        <Header />
+        <Header t={t} />
         <ToggleGroup
           value={[language]}
           onValueChange={(value) => value[0] && onLanguageChange(value[0] as Language)}
           spacing={0}
           className="-mx-4 w-auto justify-start overflow-x-auto border-b px-4 [scrollbar-width:none]"
-          aria-label="Language"
+          aria-label={t.language}
         >
           {(Object.keys(languageLabels) as Language[]).map((code) => (
             <ToggleGroupItem
@@ -74,6 +74,7 @@ export function Home({ t, language, onLanguageChange, onSubmit, error }: Props) 
           <button
             type="button"
             onClick={() => setPasting(true)}
+            aria-expanded={pasting}
             className={`${tileClass} ${pasting ? "border-primary bg-secondary" : "border-input bg-card hover:bg-muted"}`}
           >
             <ClipboardPasteIcon strokeWidth={1.75} />
@@ -85,6 +86,7 @@ export function Home({ t, language, onLanguageChange, onSubmit, error }: Props) 
           <div className="flex flex-col gap-3">
             <Textarea
               autoFocus
+              aria-label={t.pasteText}
               value={text}
               onChange={(event) => setText(event.target.value)}
               placeholder={t.pastePlaceholder}
